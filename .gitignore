@@ -14,3 +14,11 @@
 
 #ignore temp files
 *~
+
+#ignore java (junk) files
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
