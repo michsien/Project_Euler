@@ -1,22 +1,22 @@
 public class Problem2 {
   public static void main (String[] args){
-    final int limit = 4000000;
+    final int LIMIT = 4000000;
   
     //Binet's formula is f(n)~fi^n/sqrt(5) which allows to sum our subsequence
     // of the Fibonacci sequence
     
-    final double sqrtOf5 = Math.sqrt(5);
-    final double fi = (1 + sqrtOf5) / 2;
+    final double SQRT_OF5 = Math.sqrt(5);
+    final double FI = (1 + SQRT_OF5) / 2;
     //even fibs repeat every 3 fibs
-    final int cycleLength = 3;
-    final long highestEvenFibNum = Math.round(Math.log(limit * sqrtOf5) / Math.log(fi));
-    final long evens = highestEvenFibNum / cycleLength;
+    final int CYCLE_LENGTH = 3;
+    final long HIGHEST_EVEN_FIB_NUM = Math.round(Math.log(LIMIT * SQRT_OF5) / Math.log(FI));
+    final long EVENS = HIGHEST_EVEN_FIB_NUM / CYCLE_LENGTH;
 
-    final double ratio = Math.pow(fi, cycleLength);
-    final double firstEven = Math.pow(fi, 3) / sqrtOf5;
+    final double RATIO = Math.pow(FI, CYCLE_LENGTH);
+    final double FIRST_EVEN = Math.pow(FI, 3) / SQRT_OF5;
   
     //geometric series
-    long result = Math.round(firstEven * (1 - Math.pow(ratio, evens)) / (1 - ratio));
+    long result = Math.round(FIRST_EVEN * (1 - Math.pow(RATIO, EVENS)) / (1 - RATIO));
     System.out.println(result);
   }
 } 
