@@ -19,9 +19,9 @@ public class Problem1 {
   }
 
   private static int sumsequence(final int LIMIT, final int X){
-    int a_1 = X;
-    int a_n = biggestMultiple(LIMIT, X);
-    int n   = (a_n - a_1) / X + 1;
+    final int a_1 = X;
+    final int a_n = biggestMultiple(LIMIT, X);
+    final int n   = (a_n - a_1) / X + 1;
     return n * (a_1 + a_n) / 2;
   }
 
