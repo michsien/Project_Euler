@@ -2,32 +2,16 @@ import java.util.ArrayList;
 
 //least common multiple of numbers 1,2,3,...,20
 public class Problem5{
-
-  private static final ArrayList<Integer> primes = Primes.firstPrimes(100, null);
-  private static final int LIMIT = 20;
-
+  
   public static void main(String[] args){
-    int currentLCM = 1;
-    for (int i = 1; i <= LIMIT; i++){
-      currentLCM = lcm(currentLCM, i);
+    final int LIMIT = 20;
+    final ArrayList<Integer> primes = Primes.primesUpTo(LIMIT, null);
+    int result = 1;
+    for (int i = 0; i < primes.size(); i++){
+      int j = 1;
+      for (; Math.pow(primes.get(i), j) <= LIMIT; j++){}
+      result *= Math.pow(primes.get(i), j - 1);
     }
-    System.out.println(currentLCM);
+    System.out.println(result);
   }
-
-  private static int lcm(final int a, final int b){
-    int x = a;
-    int y = b;
-    for (int i = 0; primes.get(i) <= Math.min(x, y);){
-      int j = primes.get(i);
-      if (x % j == 0 && y % j == 0){
-        x = x / j;
-        y = y / j;
-      }
-      else{
-        i++;
-      }
-    }
-    return a * y;
-  }
-
 }
