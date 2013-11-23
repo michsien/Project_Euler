@@ -44,10 +44,10 @@ public class Problems1_10{
   }
 
   private static int sumsequence(final int LIMIT, final int X) {
-    final int a_1 = X;
-    final int a_n = biggestMultiple(LIMIT, X);
-    final int n   = (a_n - a_1) / X + 1;
-    return n * (a_1 + a_n) / 2;
+    final int A_1 = X;
+    final int A_N = biggestMultiple(LIMIT, X);
+    final int N   = (A_N - A_1) / X + 1;
+    return N * (A_1 + A_N) / 2;
   }
 
   private static int biggestMultiple(final int LIMIT, final int X) {
@@ -56,7 +56,7 @@ public class Problems1_10{
     return i;
   }
 
-// Problem 2 : Sum the even fibonacci numbers not greater than LIMIT
+// Problem 2 : Sum the even Fibonacci numbers not greater than LIMIT > 0
 
   public static void problem2() {
     final int LIMIT = 4000000;
@@ -73,15 +73,16 @@ public class Problems1_10{
     final long EVENS = HIGHEST_EVEN_FIB_NUM / CYCLE_LENGTH;
 
     final double RATIO = Math.pow(FI, CYCLE_LENGTH);
-    final double FIRST_EVEN = Math.pow(FI, 3) / SQRT_OF5;
+    final int FIRST_EVEN_NUM = 3;
+    final double FIRST_EVEN_VAL = Math.pow(FI, FIRST_EVEN_NUM) / SQRT_OF5;
 
     //partial sum of geometric series
-    long result = Math.round(FIRST_EVEN * (1 - Math.pow(RATIO, EVENS)) /
+    long result = Math.round(FIRST_EVEN_VAL * (1 - Math.pow(RATIO, EVENS)) /
                   (1 - RATIO));
     System.out.println(result);
   }
 
-// Problem 3 : Find greatest prime factor of certain n
+// Problem 3 : Find greatest prime factor of certain natural number n >= 2
 
   public static void problem3() {
     final int NEW_PRIMES = 1000;
@@ -111,7 +112,7 @@ public class Problems1_10{
     System.out.println(Math.max(maxFactor,n));
   }
 
-// Problem 4 : Calculates greatest palindorm produced by two 3-digit integers
+// Problem 4 : Calculate greatest palindrom produced by two 3-digit integers
 
   public static void problem4() {
     final int UPPER_LIMIT = 999;
@@ -146,14 +147,14 @@ public class Problems1_10{
     return true;
   }
 
-// Problem 5 : Calculates least common multiple of numbers 1,2,...,20
+// Problem 5 : Calculate least common multiple of numbers 1,2,...,LIMIT
 
   public static void problem5() {
     final int LIMIT = 20;
     final ArrayList<Integer> primes = Primes.primesUpTo(LIMIT, null);
     int result = 1;
-    //each prime in range 1-20 appears n times in factorisation of result, where
-    //for prime p the number n is greatest integer such that p^n<=20
+    //each prime in range 1-LIMIT appears n times in factorisation of result, 
+    //where for prime p the number n is greatest integer such that p^n<=LIMIT
     for (int i = 0; i < primes.size(); i++) {
       int j = 1;
       for (; Math.pow(primes.get(i), j) <= LIMIT; j++) {}
@@ -162,30 +163,82 @@ public class Problems1_10{
     System.out.println(result);
   }
 
-// Problem 6 : Calculates difference between square of sum of first n natural 
+// Problem 6 : Calculate difference between square of sum of first n natural 
 // numbers and sum of squares of first n natural naumbers
 
   public static void problem6() {
-    final float n = 100f;
+    final float N = 100f;
     //square of sum of first n natural numbers: (n(n+1)/2)^2
     //sum of squares of first n natural naumbers: n(n+1)(2n+1)/6
     //simplified formula for the difference:(n^2-1)(n^2/4 + n/6)
-    int result = Math.round((n * n - 1) * (n * n / 4 + n / 6));
+    int result = Math.round((N * N - 1) * (N * N / 4 + N / 6));
     System.out.println(result);
   }
 
-// Problem 7 : Calculates last prime of first LIMIT primes
+// Problem 7 : Calculate last prime of first LIMIT primes
 
   public static void problem7() {
     final int LIMIT = 10001;
     ArrayList<Integer> primes = Primes.firstPrimes(LIMIT, null);
-    final int prime = primes.get(primes.size() - 1);
-    System.out.println(prime);
+    final int PRIME = primes.get(primes.size() - 1);
+    System.out.println(PRIME);
   }
 
-// Problem 8 :
+// Problem 8 : Find the greatest product of DIGITS consecutive digits in the 
+// given number NUM
 
   public static void problem8() {
+    final String NUM = "73167176531330624919225119674426574742355349194934"
+                      + "96983520312774506326239578318016984801869478851843"
+                      + "85861560789112949495459501737958331952853208805511"
+                      + "12540698747158523863050715693290963295227443043557"
+                      + "66896648950445244523161731856403098711121722383113"
+                      + "62229893423380308135336276614282806444486645238749"
+                      + "30358907296290491560440772390713810515859307960866"
+                      + "70172427121883998797908792274921901699720888093776"
+                      + "65727333001053367881220235421809751254540594752243"
+                      + "52584907711670556013604839586446706324415722155397"
+                      + "53697817977846174064955149290862569321978468622482"
+                      + "83972241375657056057490261407972968652414535100474"
+                      + "82166370484403199890008895243450658541227588666881"
+                      + "16427171479924442928230863465674813919123162824586"
+                      + "17866458359124566529476545682848912883142607690042"
+                      + "24219022671055626321111109370544217506941658960408"
+                      + "07198403850962455444362981230987879927244284909188"
+                      + "84580156166097919133875499200524063689912560717606"
+                      + "05886116467109405077541002256983155200055935729725"
+                      + "71636269561882670428252483600823257530420752963450";
+    final int DIGITS = 5;
+    if (DIGITS > NUM.length()) {
+      System.out.println("Not enough digits in the number.");
+      return;
+    }
+    if (DIGITS <= 0) {
+      System.out.println("Product impossible to calculate.");
+      return;
+    }
+    int current = 1;
+    for (int i = 0; i < DIGITS; i++) {
+      current *= digit(NUM.charAt(i));
+    }
+    int max = current;
+    for (int i = DIGITS; i < NUM.length(); i++) {
+      if (digit(NUM.charAt(i - DIGITS)) != 0)
+        current = current * digit(NUM.charAt(i)) / digit(NUM.charAt(i - DIGITS));
+      else {
+        current = 1;
+        for (int j = 0; j < DIGITS; j++) {
+          current *= digit(NUM.charAt(i - j));
+        }
+      }
+      if (current > max)
+        max = current;
+    }
+    System.out.println(max);
+  }
+
+  private static int digit(char c) {
+    return c - '0';
   }
 
 // Problem 9 :
@@ -193,9 +246,16 @@ public class Problems1_10{
   public static void problem9() {
   }
 
-// Problem 10 :
+// Problem 10 : Caculate sum of primes below LIMIT
 
   public static void problem10() {
+    final int LIMIT = 2000000;
+    final ArrayList<Integer> PRIMES = Primes.primesUpTo(LIMIT - 1, null);
+    long result = 0L;
+    for (int i = 0; i < PRIMES.size(); i++) {
+      result += PRIMES.get(i);
+    }
+    System.out.println(result);
   }
 
 }
