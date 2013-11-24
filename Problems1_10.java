@@ -241,12 +241,29 @@ public class Problems1_10{
     return c - '0';
   }
 
-// Problem 9 :
+// Problem 9 : Fing a Pythagorean triplet a < b < c for which a + b + c = TARGET
 
   public static void problem9() {
+   final int TARGET = 1000;
+   final int SMALLEST_C = ((int) TARGET / 3) + 1;
+   final int GREATEST_C = ((int) TARGET / 2) - 1;
+   int a = 0;
+   int b = 0;
+   int c = 0;
+   outer: for (int i = SMALLEST_C; i <= GREATEST_C; i++) {
+     for (int j = 1 + ((int) (TARGET - i) / 2); j < i; j++) {
+       if (i * i == j * j + Math.pow((TARGET - i - j), 2)) {
+         c = i;
+         b = j;
+         a = TARGET - i - j;
+         break outer;
+       }
+     }
+   }
+   System.out.println(a*b*c);
   }
 
-// Problem 10 : Caculate sum of primes below LIMIT
+// Problem 10 : Calculate sum of primes below LIMIT
 
   public static void problem10() {
     final int LIMIT = 2000000;
