@@ -29,9 +29,34 @@ public class Problems11_20{
   public static void problem11() {
   }
 
-// Problem 12 :
+// Problem 12 : Find the value of first triangle number that has more than
+// TARGET divisors
 
   public static void problem12() {
+    final int NEW_PRIMES = 100;
+    ArrayList<Integer> primes = Primes.firstPrimes(NEW_PRIMES, null);
+    final int TARGET = 500;
+    long n = 0;
+    int divisors = 1;
+    while (divisors <= TARGET) {
+      n++;
+      divisors = 1;
+      long m = n * (n + 1) / 2;
+      for (int i = 0; m > 1; i++) {
+        //if needed, expand list of primes
+        if (i == primes.size() - 1)
+          primes = Primes.firstPrimes(NEW_PRIMES, primes);
+        //count the appearances of currentPrime in factorisation of m
+        int count = 0;
+        int currentPrime = primes.get(i);
+        while (m % currentPrime == 0) {
+          m /= currentPrime;
+          count++;
+        }
+        divisors *= count + 1;
+      }
+    }
+    System.out.println( n * (n + 1) / 2);
   }
 
 // Problem 13 : Find first NUM_OF_DIGITS digits of a sum of a list of 
@@ -141,6 +166,7 @@ public class Problems11_20{
       "20849603980134001723930671666823555245252804609722",
       "53503534226472524250874054075591789781264330331690"
       };
+    //calculate the sum -> it is concatentation of carry and reversed result
     final ArrayList<Integer> result = new ArrayList<Integer>(0);
     int carry = 0;
     for (int i = numbers[0].length() - 1; i >= 0; i--) {
@@ -151,9 +177,11 @@ public class Problems11_20{
       result.add(sum % BASE);
       carry = sum / BASE;
     }
+    //printing first NUM_OF_DIGITS digits
     String carryStr = String.valueOf(carry);
     System.out.print(carryStr);
-    int indexOfLastDigitToPrint = result.size() - NUM_OF_DIGITS + carryStr.length();
+    int indexOfLastDigitToPrint = result.size() - NUM_OF_DIGITS + 
+                                  carryStr.length();
     for (int i = result.size() - 1; i >= indexOfLastDigitToPrint; i--){
       System.out.print(result.get(i));
     }

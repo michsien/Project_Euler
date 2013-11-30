@@ -85,26 +85,22 @@ public class Problems1_10{
 // Problem 3 : Find greatest prime factor of certain natural number n >= 2
 
   public static void problem3() {
-    final int NEW_PRIMES = 1000;
+    final int NEW_PRIMES = 100;
     ArrayList<Integer> primes = Primes.firstPrimes(NEW_PRIMES, null);
     long n = 600851475143L;
     int maxFactor = 1;
-    //divide out 2s (simplifies the for loop)
-    if (n % 2 == 0) {
-      maxFactor = 2;
-      for (; n % 2 == 0 ; n = n / 2);
-    }
-    for (int i = 3; i <= Math.sqrt(n) ;) {
+    for (int i = 0; primes.get(i) <= Math.sqrt(n) ;) {
       //if needed, expand list of primes
-      if (i == primes.get(primes.size() - 1))
+      if (i == primes.size() - 1)
         primes = Primes.firstPrimes(NEW_PRIMES, primes);
+      int prime = primes.get(i);
       //if factor found then we remember it and divide it out
-      if ( n % i == 0) {
-        maxFactor = i;
-        n = n / i;
+      if ( n % prime == 0) {
+        maxFactor = prime;
+        n = n / prime;
       }
       else {
-        i += 2;
+        i ++;
       }
     }
     //as loop stopped when i > Math.sqrt(n) then n is now prime so either
