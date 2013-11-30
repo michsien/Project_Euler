@@ -31,28 +31,28 @@ public class Problems1_10{
     final int NUM2 = 5;
     System.out.println("Please provide limit for the calculations:");
     Scanner sc = new Scanner(System.in);
-    final int LIMIT = sc.nextInt();
+    final int limit = sc.nextInt();
     System.out.println("The sum of multiples of 3 or 5 below limit is:");
     int sum = 0;
-    if (LIMIT > NUM1)
-      sum += sumsequence(LIMIT, NUM1);
-    if (LIMIT > NUM2)
-      sum += sumsequence(LIMIT, NUM2);
-    if (LIMIT > NUM1 * NUM2);
-      sum -= sumsequence(LIMIT, NUM1 * NUM2);
+    if (limit > NUM1)
+      sum += sumsequence(limit, NUM1);
+    if (limit > NUM2)
+      sum += sumsequence(limit, NUM2);
+    if (limit > NUM1 * NUM2);
+      sum -= sumsequence(limit, NUM1 * NUM2);
     System.out.println(sum);
   }
 
-  private static int sumsequence(final int LIMIT, final int X) {
-    final int A_1 = X;
-    final int A_N = biggestMultiple(LIMIT, X);
-    final int N   = (A_N - A_1) / X + 1;
-    return N * (A_1 + A_N) / 2;
+  private static int sumsequence(final int limit, final int x) {
+    final int a_1 = x;
+    final int a_n = biggestMultiple(limit, x);
+    final int n   = (a_n - a_1) / x + 1;
+    return n * (a_1 + a_n) / 2;
   }
 
-  private static int biggestMultiple(final int LIMIT, final int X) {
-    int i = LIMIT - 1;
-    for (;i % X != 0; i--);
+  private static int biggestMultiple(final int limit, final int x) {
+    int i = limit - 1;
+    for (;i % x != 0; i--);
     return i;
   }
 
@@ -130,7 +130,7 @@ public class Problems1_10{
   }
 
   private static boolean palindrom(int n) {
-    ArrayList<Integer> digits = new ArrayList<Integer>(0);
+    final ArrayList<Integer> digits = new ArrayList<Integer>(0);
     while (n >= BASE) {
       digits.add(n % BASE);
       n = n / BASE;
@@ -179,9 +179,9 @@ public class Problems1_10{
 
   public static void problem7() {
     final int LIMIT = 10001;
-    ArrayList<Integer> primes = Primes.firstPrimes(LIMIT, null);
-    final int PRIME = primes.get(primes.size() - 1);
-    System.out.println(PRIME);
+    final ArrayList<Integer> primes = Primes.firstPrimes(LIMIT, null);
+    final int prime = primes.get(primes.size() - 1);
+    System.out.println(prime);
   }
 
 // Problem 8 : Find the greatest product of DIGITS consecutive digits in the 
@@ -267,10 +267,10 @@ public class Problems1_10{
 
   public static void problem10() {
     final int LIMIT = 2000000;
-    final ArrayList<Integer> PRIMES = Primes.primesUpTo(LIMIT - 1, null);
+    final ArrayList<Integer> primes = Primes.primesUpTo(LIMIT - 1, null);
     long result = 0L;
-    for (int i = 0; i < PRIMES.size(); i++) {
-      result += PRIMES.get(i);
+    for (int i = 0; i < primes.size(); i++) {
+      result += primes.get(i);
     }
     System.out.println(result);
   }
