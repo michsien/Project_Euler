@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.math.BigInteger;
 
 public class Problems11_20{
 
@@ -192,24 +193,125 @@ public class Problems11_20{
     return c - '0';
   }
 
-// Problem 14 :
+// Problem 14 : find the number below LIMIT producing longest Collatz sequence
 
   public static void problem14() {
+    final int LIMIT = 1000000;
+    //info about numbers that appered in sequences
+    boolean[] appeared = new boolean[LIMIT - 1];
+    //info about numbers for which we calculated Collatz sequences lengths
+    boolean[] calculated = new boolean[LIMIT - 1];
+    //Collatz sequences lengths
+    int[] collatzLengths = new int[LIMIT - 1];
+    //distances from first terms in sequences of numbers that only appeared
+    // in the middle of sequences AND appropriate first terms - in practice,
+    // we have easily accesible lengths of Collatz sequences for all the numbers
+    // that appear in the middle of sequences
+    int[][] distancesFromStarters = new int[LIMIT - 1][2];
+    int bestStart = 1;
+    int maxTerms = 1;
+    for (int i = 0; i < appeared.length; i++) {
+      appeared[i] = false;
+      calculated[i] = false;
+      collatzLengths[i] = 0;
+      distancesFromStarters[i][0] = 0;
+      distancesFromStarters[i][1] = 0;
+    }
+    for (int i = 0; i < appeared.length; i++) {
+      // if number appeared in previous sequences then we skip it
+      if (appeared[i])
+        continue;
+      long num = i + 1;
+      int terms = 1;
+      // checking length of Collatz sequence, remembering numbers that appear
+      // and their distances to first term in sequence
+      while (num > 1) {
+        if (num < LIMIT) {
+          if (appeared[(int) num - 1]) {
+          // using previously calculated values to calculate terms
+            if (calculated[(int) num - 1]) {
+              terms += collatzLengths[(int) num - 1] - 1;
+            }
+            else {
+              terms += collatzLengths[distancesFromStarters[(int) num - 1][1]] 
+                       - distancesFromStarters[(int) num - 1][0];
+            };
+          break;
+          }
+          else {
+          //saving distance of this term to the first term 
+            appeared[(int) num - 1] = true;
+            distancesFromStarters[(int) num - 1][0] = terms;
+            distancesFromStarters[(int) num - 1][1] = i;
+          }
+        }
+        terms++;
+        num = (num % 2 == 0) ? (num / 2) : (3 * num + 1);
+      }
+      //updating number with longest Collatz sequence
+      if (terms >= maxTerms) {
+        maxTerms = terms;
+        bestStart = i + 1;
+      }
+      //remembering the result
+      appeared[i] = true;
+      calculated[i] = true;
+      collatzLengths[i] = terms;
+    }
+    System.out.println(bestStart);
   }
 
-// Problem 15 :
+// Problem 15 : How many routs are there from top left to bottom right corner
+// of a DIM x DIM grid if you can only move to the right and ?
 
   public static void problem15() {
+    final int DIM = 20;
+    //table with results for subgrids
+    long[][] results = new long[DIM + 1][DIM + 1];
+    //inserting results for extreme cases
+    for (int i = 0; i < DIM + 1; i++) {
+      results[i][DIM] = 1;
+      results[DIM][i] = 1;
+    }
+    //dynamically calculating results for larger grids
+    for (int i = results.length - 2; i >= 0; i --) {
+      for (int j = results[0].length - 2; j >= 0; j --) {
+        results[i][j] = results[i + 1][j] + results[i][j + 1];
+      }
+    }
+    System.out.println(results[0][0]);
   }
 
-// Problem 16 :
+// Problem 16 : find sum of digits of 2^POWER
 
   public static void problem16() {
+    final int POWER = 1000;
+    BigInteger n = new BigInteger("2");
+    n = n.pow(POWER);
+    int sum = 0;
+    String number = n.toString();
+    for (int i = 0; i < number.length(); i++) {
+      sum += digit(number.charAt(i));
+    }
+    System.out.println(sum);
   }
 
-// Problem 17 :
+// Problem 17 : sum letters of numbers between 1 and 1000
 
   public static void problem17() {
+    // 1. numbers between 1 and 9 give us 36 letters
+    // they appear 90 times as part of numbers and 100 times at the beginning of
+    // numbers (e.g. one hundred and ten) so we get 36*190 (we do not count now
+    // "one" in "one thousand")
+    // 2. numbers between 10 - 19 give us 70 letters and they appear 10 times
+    // so we get 70*10
+    // 3. numbers 20,..,90 give us 46 letters and appear 100 times so we get
+    // 46*100
+    // 4. word hundred has 7 letters and appear 900 times so we get 7*900
+    // 5. word and has 3 letters and appear 99 times per each hunded except the
+    // first one so we get 3*9*99
+    // 9. lastly, we have to add "one thousand" which has 11 letters
+    System.out.println(36 * 190 + 70 * 10 + 46 * 100 + 7 * 900 + 3 * 9 * 99 + 11);
   }
 
 // Problem 18 :
