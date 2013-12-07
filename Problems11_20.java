@@ -5,6 +5,9 @@ import java.math.BigInteger;
 public class Problems11_20{
 
   private static final int BASE = 10;
+  private static final int CENTURY = 100;
+  private static final int YEARS_BETWEEN_LEAP_YEARS = 4;
+  private static final int WEEK_LENGTH = 7;
 
   public static void main(String[] args) {
     System.out.println("Choose the number of the problem to be solved(11-20):");
@@ -345,14 +348,62 @@ public class Problems11_20{
     System.out.println(triangle[0][0]);
   }
 
-// Problem 19 :
+// Problem 19 : "How many Sundays fell on the first of the month during the
+// twentieth century" (January 1s 1900 was a Monday)
 
   public static void problem19() {
+    //Note down which day of the week is first day of each month except January
+    //if first of January was Sunday
+    int[] regularYear = {3, 3, 6, 1, 4, 6, 2, 5, 7, 3, 5};
+    int[] leapYear = {3, 4, 7, 2, 5, 7, 3, 6, 1, 4, 6};
+    final int LOWER_LIMIT = 1901;
+    final int UPPER_LIMIT = 2000;
+    // variable holding info about which day of week is first of January of 
+    // investigated year (January 1s 1901 was a Tuesday)
+    int firstJan = 2;
+    int result = 0;
+    for (int i = LOWER_LIMIT; i <= UPPER_LIMIT; i++) {
+      if (firstJan == WEEK_LENGTH)
+        result++;
+      if (leapYear(i)) {
+        for (int j = 0; j < leapYear.length; j++) {
+          if ((firstJan + leapYear[j]) % WEEK_LENGTH == 0)
+            result++;
+        }
+        firstJan = (firstJan + 1) % WEEK_LENGTH + 1;
+      }
+      else {
+        for (int j = 0; j < regularYear.length; j++) {
+          if ((firstJan + regularYear[j]) % WEEK_LENGTH == 0)
+            result++;
+        }
+        firstJan = firstJan % WEEK_LENGTH + 1;
+      }
+    }
+    System.out.println(result);
   }
 
-// Problem 20 :
+  private static boolean leapYear(int year) {
+    if (year % YEARS_BETWEEN_LEAP_YEARS != 0)
+      return false;
+    return !(year % CENTURY == 0  &&
+             year % Math.pow(2, YEARS_BETWEEN_LEAP_YEARS) != 0);
+  }
+
+// Problem 20 : find the sum of digits of LIMIT!
 
   public static void problem20() {
+    final int LIMIT = 100;
+    BigInteger n = new BigInteger("1");
+    for (int i = 2; i <= LIMIT; i++) {
+      n = n.multiply(new BigInteger(Integer.toString(i)));
+    }
+    int sum = 0;
+    String number = n.toString();
+    for (int i = 0; i < number.length(); i++) {
+      sum += digit(number.charAt(i));
+    }
+    System.out.println(sum);
   }
 
 }
