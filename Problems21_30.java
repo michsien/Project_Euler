@@ -162,7 +162,7 @@ public class Problems21_30 {
 
   public static void problem25() {
     //Binet's formula is f(n)~fi^n/sqrt(5)
-    //first number with at east 1000 digits is 10^999
+    //first number with at least 1000 digits is 10^999
 
     final double SQRT_OF5 = Math.sqrt(5);
     final double FI = (1 + SQRT_OF5) / 2;
@@ -177,14 +177,82 @@ public class Problems21_30 {
   public static void problem26() {
   }
 
-// Problem 27 :
+// "Problem 27 : Considering quadratics of the form:
+//  n² + an + b, where |a| < 1000 and |b| < 1000 [...]
+// Find the product of the coefficients, a and b, for the quadratic expression 
+// that produces the maximum number of primes for consecutive values of n,
+// starting with n = 0."
 
   public static void problem27() {
+    final int LIMIT = 1000;
+    int coeffProduct = 0;
+    int maxPrimes = 0;
+    ArrayList<Integer> primes = Primes.primesUpTo(LIMIT, null);
+    for (int i = 0; ; i++) {
+      if (i == primes.size())
+        break;
+      int b = primes.get(i);
+      if (b >= LIMIT)
+        break;
+      for (int a = 1 - LIMIT; a < LIMIT; a++) {
+        int primesFound = 0;
+        // checking how many consecutive values of 
+        // n² + an + b (n = 0,1,...) are prime
+        for (int valOfQuad = b; isPrime(valOfQuad, primes) ;
+             valOfQuad += a + 2 * primesFound - 1 ) {
+          primesFound++;
+        }
+        if (primesFound > maxPrimes) {
+          maxPrimes = primesFound;
+          coeffProduct = a * b;
+        }
+      }
+    }
+    System.out.println(coeffProduct);
   }
 
-// Problem 28 :
+  private static boolean isPrime(int n, ArrayList<Integer> primes) {
+    if (n < 2)
+      return false;
+    final int NEW_PRIMES = 100;
+    if (primes == null)
+      primes = Primes.firstPrimes(NEW_PRIMES, primes);
+    if (primes.get(primes.size() - 1) < (int) Math.sqrt(n))
+      primes = Primes.firstPrimes(NEW_PRIMES, primes);
+    for (int i = 0; i < primes.size(); i++) {
+      int prime = primes.get(i);
+      int rootOfN = (int) Math.sqrt(n);
+      if (prime > rootOfN)
+        return true;
+      if (n % prime == 0)
+        return false;
+    }
+    return true;
+  }
+
+// Problem 28 : Starting with the number 1 and moving to the right in a clockwise
+// direction a 5 by 5 spiral is formed as follows:
+
+//          21 22 23 24 25
+//          20  7  8  9 10
+//          19  6  1  2 11
+//          18  5  4  3 12
+//          17 16 15 14 13
+// It can be verified that the sum of the numbers on the diagonals is 101.
+// What is the sum of the numbers on the diagonals in a 1001 by 1001 spiral 
+// formed in the same way?
+
 
   public static void problem28() {
+  //It is easy to see that sum of numbers in the four corners of such NxN 
+  //'spiral' is 4N^2 - 6(N-1). All we need to do is use well-known formulas for
+  // summing odd powers of consecutive natural numbers. The formula is:
+  // 1 + 4(M(4M^2 - 1) / 3 - 1) - 6((M^2 - 1) - (N - 1) / 2) where M = (N + 1)/2
+    final long N = 1001;
+    final long M = (N + 1) / 2;
+    final long RESULT = 1 + 4 * (M * (4 * M * M - 1) / 3 -1) -
+                        6 * ((M * M - 1) - (N - 1) / 2);
+    System.out.println(RESULT);
   }
 
 // Problem 29 :
@@ -192,9 +260,41 @@ public class Problems21_30 {
   public static void problem29() {
   }
 
-// Problem 30 :
+// Problem 30 : "Find the sum of all the numbers that can be written as the sum 
+// of fifth powers of their digits.""As 1 = 1^4 is not a sum it is not included."
 
   public static void problem30() {
+    final int POWER = 5;
+    final int MAX_VAL_FROM_DIGIT = (int) Math.pow(BASE - 1, POWER);
+    //we need to find the range of numbers which values do not exceed 
+   //N*MAX_VAL_FROM_DIGIT where N is the number of digits of a given number
+    int limitingPower;
+    for (limitingPower = 1; Math.pow(BASE, limitingPower - 1) <= 
+        MAX_VAL_FROM_DIGIT * limitingPower; limitingPower++);
+    limitingPower--;
+    //we remember values of powers of digits
+    int[] digitPowers = new int[BASE];
+    for (int i = 0; i < digitPowers.length; i++) {
+      digitPowers[i] = (int) Math.pow(i, POWER);
+    }
+    long result = 0;
+    //we start from BASE as otherwise we would have only one digit numbers-could
+    //not count them as we would not have sums of powers of digits
+    for (long i = BASE; i < Math.pow(BASE, limitingPower); i++) {
+      if (i == sumOfPowersOfDigits(i, digitPowers))
+        result += i;
+    }
+    System.out.println(result);
+  }
+
+  private static long sumOfPowersOfDigits(long n, int[] digitPowers) {
+    long sum = 0;
+    while (n >= BASE) {
+      sum += digitPowers[(int) n % BASE];
+      n /= BASE;
+    }
+    sum += digitPowers[(int) n];
+    return sum;
   }
 
 
