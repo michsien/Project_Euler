@@ -8,7 +8,7 @@ public class Problems21_30 {
 
 
   public static void main(String[] args) {
-    System.out.println("Choose the number of the problem to be solved(11-20):");
+    System.out.println("Choose the number of the problem to be solved(21-30):");
     Scanner sc = new Scanner(System.in);
     int number = sc.nextInt();
     switch (number) {
